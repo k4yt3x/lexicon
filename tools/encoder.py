@@ -3,73 +3,44 @@
 
 # fmt: off
 # Look up table for converting bytes to English words
-LOOKUP_TABLE = {
-    "the": 0x0, "of": 0x1, "and": 0x2, "to": 0x3,
-    "in": 0x4, "for": 0x5, "is": 0x6, "on": 0x7,
-    "that": 0x8, "by": 0x9, "this": 0xA, "with": 0xB,
-    "you": 0xC, "it": 0xD, "not": 0xE, "or": 0xF,
-    "be": 0x10, "are": 0x11, "from": 0x12, "at": 0x13,
-    "as": 0x14, "your": 0x15, "all": 0x16, "have": 0x17,
-    "new": 0x18, "more": 0x19, "an": 0x1A, "was": 0x1B,
-    "we": 0x1C, "will": 0x1D, "home": 0x1E, "can": 0x1F,
-    "us": 0x20, "about": 0x21, "if": 0x22, "page": 0x23,
-    "my": 0x24, "has": 0x25, "search": 0x26, "free": 0x27,
-    "but": 0x28, "our": 0x29, "one": 0x2A, "other": 0x2B,
-    "do": 0x2C, "no": 0x2D, "information": 0x2E, "time": 0x2F,
-    "they": 0x30, "site": 0x31, "he": 0x32, "up": 0x33,
-    "may": 0x34, "what": 0x35, "which": 0x36, "their": 0x37,
-    "news": 0x38, "out": 0x39, "use": 0x3A, "any": 0x3B,
-    "there": 0x3C, "see": 0x3D, "only": 0x3E, "so": 0x3F,
-    "his": 0x40, "when": 0x41, "contact": 0x42, "here": 0x43,
-    "business": 0x44, "who": 0x45, "web": 0x46, "also": 0x47,
-    "now": 0x48, "help": 0x49, "get": 0x4A, "pm": 0x4B,
-    "view": 0x4C, "online": 0x4D, "first": 0x4E, "am": 0x4F,
-    "been": 0x50, "would": 0x51, "how": 0x52, "were": 0x53,
-    "me": 0x54, "services": 0x55, "some": 0x56, "these": 0x57,
-    "click": 0x58, "its": 0x59, "like": 0x5A, "service": 0x5B,
-    "than": 0x5C, "find": 0x5D, "price": 0x5E, "date": 0x5F,
-    "back": 0x60, "top": 0x61, "people": 0x62, "had": 0x63,
-    "list": 0x64, "name": 0x65, "just": 0x66, "over": 0x67,
-    "state": 0x68, "year": 0x69, "day": 0x6A, "into": 0x6B,
-    "email": 0x6C, "two": 0x6D, "health": 0x6E, "world": 0x6F,
-    "re": 0x70, "next": 0x71, "used": 0x72, "go": 0x73,
-    "work": 0x74, "last": 0x75, "most": 0x76, "products": 0x77,
-    "music": 0x78, "buy": 0x79, "data": 0x7A, "make": 0x7B,
-    "them": 0x7C, "should": 0x7D, "product": 0x7E, "system": 0x7F,
-    "post": 0x80, "her": 0x81, "city": 0x82, "add": 0x83,
-    "policy": 0x84, "number": 0x85, "such": 0x86, "please": 0x87,
-    "available": 0x88, "copyright": 0x89, "support": 0x8A, "message": 0x8B,
-    "after": 0x8C, "best": 0x8D, "software": 0x8E, "then": 0x8F,
-    "jan": 0x90, "good": 0x91, "video": 0x92, "well": 0x93,
-    "where": 0x94, "info": 0x95, "rights": 0x96, "public": 0x97,
-    "books": 0x98, "high": 0x99, "school": 0x9A, "through": 0x9B,
-    "each": 0x9C, "links": 0x9D, "she": 0x9E, "review": 0x9F,
-    "years": 0xA0, "order": 0xA1, "very": 0xA2, "privacy": 0xA3,
-    "book": 0xA4, "items": 0xA5, "company": 0xA6, "read": 0xA7,
-    "group": 0xA8, "sex": 0xA9, "need": 0xAA, "many": 0xAB,
-    "user": 0xAC, "said": 0xAD, "de": 0xAE, "does": 0xAF,
-    "set": 0xB0, "under": 0xB1, "general": 0xB2, "research": 0xB3,
-    "university": 0xB4, "january": 0xB5, "mail": 0xB6, "full": 0xB7,
-    "map": 0xB8, "reviews": 0xB9, "program": 0xBA, "life": 0xBB,
-    "know": 0xBC, "games": 0xBD, "way": 0xBE, "days": 0xBF,
-    "management": 0xC0, "part": 0xC1, "could": 0xC2, "great": 0xC3,
-    "united": 0xC4, "hotel": 0xC5, "real": 0xC6, "item": 0xC7,
-    "international": 0xC8, "center": 0xC9, "ebay": 0xCA, "must": 0xCB,
-    "store": 0xCC, "travel": 0xCD, "comments": 0xCE, "made": 0xCF,
-    "development": 0xD0, "report": 0xD1, "off": 0xD2, "member": 0xD3,
-    "details": 0xD4, "line": 0xD5, "terms": 0xD6, "before": 0xD7,
-    "hotels": 0xD8, "did": 0xD9, "send": 0xDA, "right": 0xDB,
-    "type": 0xDC, "because": 0xDD, "local": 0xDE, "those": 0xDF,
-    "using": 0xE0, "results": 0xE1, "office": 0xE2, "education": 0xE3,
-    "national": 0xE4, "car": 0xE5, "design": 0xE6, "take": 0xE7,
-    "posted": 0xE8, "internet": 0xE9, "address": 0xEA, "community": 0xEB,
-    "within": 0xEC, "states": 0xED, "area": 0xEE, "want": 0xEF,
-    "phone": 0xF0, "dvd": 0xF1, "shipping": 0xF2, "reserved": 0xF3,
-    "subject": 0xF4, "between": 0xF5, "forum": 0xF6, "family": 0xF7,
-    "long": 0xF8, "based": 0xF9, "code": 0xFA, "show": 0xFB,
-    "even": 0xFC, "black": 0xFD, "check": 0xFE, "special": 0xFF,
-}
+LOOKUP_TABLE = [
+    "the", "of", "and", "to", "in", "for", "is", "on", "that", "by", "this",
+    "with", "you", "it", "not", "or", "be", "are", "from", "at", "as",
+    "your", "all", "have", "new", "more", "an", "was", "we", "will", "home",
+    "can", "us", "about", "if", "page", "my", "has", "search", "free",
+    "but", "our", "one", "other", "do", "no", "information", "time", "they",
+    "site", "he", "up", "may", "what", "which", "their", "news", "out",
+    "use", "any", "there", "see", "only", "so", "his", "when", "contact",
+    "here", "business", "who", "web", "also", "now", "help", "get", "pm",
+    "view", "online", "first", "am", "been", "would", "how", "were", "me",
+    "services", "some", "these", "click", "its", "like", "service", "than",
+    "find", "price", "date", "back", "top", "people", "had", "list", "name",
+    "just", "over", "state", "year", "day", "into", "email", "two",
+    "health", "world", "re", "next", "used", "go", "work", "last", "most",
+    "products", "music", "buy", "data", "make", "them", "should", "product",
+    "system", "post", "her", "city", "add", "policy", "number", "such",
+    "please", "available", "copyright", "support", "message", "after",
+    "best", "software", "then", "jan", "good", "video", "well", "where",
+    "info", "rights", "public", "books", "high", "school", "through",
+    "each", "links", "she", "review", "years", "order", "very", "privacy",
+    "book", "items", "company", "read", "group", "sex", "need", "many",
+    "user", "said", "de", "does", "set", "under", "general", "research",
+    "university", "january", "mail", "full", "map", "reviews", "program",
+    "life", "know", "games", "way", "days", "management", "part", "could",
+    "great", "united", "hotel", "real", "item", "international", "center",
+    "ebay", "must", "store", "travel", "comments", "made", "development",
+    "report", "off", "member", "details", "line", "terms", "before",
+    "hotels", "did", "send", "right", "type", "because", "local", "those",
+    "using", "results", "office", "education", "national", "car", "design",
+    "take", "posted", "internet", "address", "community", "within",
+    "states", "area", "want", "phone", "dvd", "shipping", "reserved",
+    "subject", "between", "forum", "family", "long", "based", "code",
+    "show", "even", "black", "check", "special"
+]
 # fmt: on
+
+# Make sure the lookup table has 256 words
+assert len(LOOKUP_TABLE) == 256
 
 # Read the shellcode bytes from the file
 with open("../examples/shellcode", "rb") as shellcode_file:
@@ -77,6 +48,6 @@ with open("../examples/shellcode", "rb") as shellcode_file:
 
 # Convert the shellcode bytes to English words and print them
 for index, byte in enumerate(shellcode):
-    print(list(LOOKUP_TABLE.keys())[list(LOOKUP_TABLE.values()).index(byte)], end="")
+    print(LOOKUP_TABLE[byte], end="")
     if index != len(shellcode) - 1:
         print(" ", end="")
