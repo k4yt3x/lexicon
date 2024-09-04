@@ -44,7 +44,7 @@ const unsigned long LOOKUP_TABLE[] = {
     0x7c9a2f35, 0xf2388e4,  0x7c953e80, 0x7c9de846, 0x7c967533, 0xf294442,  0xf393c43,  0xa4c66e86,
 };
 
-unsigned long djb2(const char *str) {
+static inline __attribute__((always_inline)) unsigned long djb2(const char *str) {
     unsigned long hash = 5381;
     int c;
 
@@ -143,7 +143,7 @@ const char *LOOKUP_TABLE[] = {"the",        "of",          "and",
 #endif
 
 // Function to find the hex value for a word
-uint8_t find_hex_value(const char *word) {
+static inline __attribute__((always_inline)) uint8_t find_hex_value(const char *word) {
     for (int i = 0; i < sizeof(LOOKUP_TABLE); i++) {
 #ifdef DJB2
         if (djb2(word) == LOOKUP_TABLE[i]) {

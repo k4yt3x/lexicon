@@ -15,7 +15,7 @@ all: build
 
 build:
 	mkdir -p $(BINDIR)
-	gcc $(CFLAGS) $(DJB2_FLAG) -s $(SRCDIR)/lexikon.c -o $(BINDIR)/lexikon
+	gcc $(CFLAGS) $(DJB2_FLAG) -Ofast -s $(SRCDIR)/lexikon.c -o $(BINDIR)/lexikon
 
 debug:
 	mkdir -p $(BINDIR)
