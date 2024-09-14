@@ -229,12 +229,16 @@ int main(int argc, char *argv[]) {
     free(writable_content);
     munmap(file_content, sb.st_size);
 
+#ifdef JMP
+    // Jump to the executable memory
+    __asm__("jmp *%0" : : "r"(executable_memory));
+#else
     // Cast executable memory to a function pointer and execute
     void (*shellcode)() = (void (*)())executable_memory;
     shellcode();
+#endif
 
     // Clean up
     munmap(executable_memory, sb.st_size);
-
     return 0;
 }

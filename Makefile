@@ -11,15 +11,22 @@ else
     DJB2_FLAG=
 endif
 
+# specify JMP=1 to jmp to the shellcode instead of call
+ifeq ($(JMP), 1)
+    JMP_FLAG=-DJMP
+else
+    JMP_FLAG=
+endif
+
 all: build
 
 build:
 	mkdir -p $(BINDIR)
-	gcc $(CFLAGS) $(DJB2_FLAG) -Ofast -s $(SRCDIR)/lexikon.c -o $(BINDIR)/lexikon
+	gcc $(CFLAGS) $(DJB2_FLAG) $(JMP_FLAG) -Ofast -s $(SRCDIR)/lexikon.c -o $(BINDIR)/lexikon
 
 debug:
 	mkdir -p $(BINDIR)
-	gcc $(CFLAGS) $(DJB2_FLAG) -g -DDEBUG $(SRCDIR)/lexikon.c \
+	gcc $(CFLAGS) $(DJB2_FLAG) $(JMP_FLAG) -g -DDEBUG $(SRCDIR)/lexikon.c \
 		-no-pie -fno-stack-protector -Wl,-z,norelro -z execstack \
 		-o $(BINDIR)/lexikon
 
