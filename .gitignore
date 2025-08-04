@@ -1,3 +1,7 @@
+# CMake
+.cache/
+compile_commands.json
+
 # Built-binaries
 bin/
 
