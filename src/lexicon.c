@@ -29,7 +29,8 @@ sigjmp_buf g_jump_buffer;
 uint8_t* g_executable_memory;
 
 #ifdef DJB2
-static inline __attribute__((always_inline)) unsigned long djb2(const char* str) {
+[[gnu::always_inline]]
+static inline unsigned long djb2(const char* str) {
     unsigned long hash = 5381;
     int c;
 
@@ -41,7 +42,8 @@ static inline __attribute__((always_inline)) unsigned long djb2(const char* str)
 #endif
 
 // Function to find the hex value for a word
-static inline __attribute__((always_inline)) uint8_t find_hex_value(const char* word) {
+[[gnu::always_inline]]
+static inline uint8_t find_hex_value(const char* word) {
     for (int i = 0; i < sizeof(LOOKUP_TABLE) / sizeof(LOOKUP_TABLE[0]); i++) {
 #ifdef DJB2
         if (djb2(word) == LOOKUP_TABLE[i]) {
