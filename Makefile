@@ -29,14 +29,14 @@ debug: prepare shellcode
 	$(CC) $(CFLAGS) -g -DDEBUG $(SRCDIR)/lexicon.c -o $(BINDIR)/lexicon
 
 custom: prepare
-	ld -o $(BINDIR)/payload.bin -N -Ttext 0x0 --oformat binary $(OBJDIR)/payload.o
-	python3 tools/encoder.py $(BINDIR)/payload.bin $(INCDIR)/shellcode.h
+	ld -o $(BINDIR)/shellcode.bin -N -Ttext 0x0 --oformat binary $(OBJDIR)/shellcode.o
+	python3 tools/encoder.py $(BINDIR)/shellcode.bin $(INCDIR)/shellcode.h
 	$(CC) $(CFLAGS) -O3 -ffast-math -s $(SRCDIR)/lexicon.c -o $(BINDIR)/lexicon
 
 shellcode: prepare
-	nasm -f elf64 $(SRCDIR)/payload.nasm -o $(OBJDIR)/payload.o
-	ld -o $(BINDIR)/payload.bin -N -Ttext 0x0 --oformat binary $(OBJDIR)/payload.o
-	python3 tools/encoder.py $(BINDIR)/payload.bin $(INCDIR)/shellcode.h
+	nasm -f elf64 $(SRCDIR)/shellcode.nasm -o $(OBJDIR)/shellcode.o
+	ld -o $(BINDIR)/shellcode.bin -N -Ttext 0x0 --oformat binary $(OBJDIR)/shellcode.o
+	python3 tools/encoder.py $(BINDIR)/shellcode.bin $(INCDIR)/shellcode.h
 
 prepare:
 	mkdir -p $(BINDIR) $(OBJDIR)

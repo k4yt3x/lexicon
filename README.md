@@ -34,14 +34,14 @@ This is what the `main` function looks like if you drag it into IDA Pro to illus
 
 ### Using the Built-in NASM Template
 
-This repo contains a built-in NASM template and shellcode encoding tools that allow you to easily create a binary that's ready to be deployed. All you need to do is to write your NASM code in the `src/payload.nasm` file, then compile the project.
+This repo contains a built-in NASM template and shellcode encoding tools that allow you to easily create a binary that's ready to be deployed. All you need to do is to write your NASM code in the `src/shellcode.nasm` file, then compile the project.
 
-1. Write your own position-independent NASM shellcode program in `src/payload.nasm`.
+1. Write your own position-independent NASM shellcode program in `src/shellcode.nasm`.
 2. Compile the project by running `make`. The shellcode will be automatically compiled, encoded, and embedded into the output `bin/lexicon` binary.
 
 ### Using Custom Shellcode
 
 You can also prepare your own shellcode.
 
-1. Write your shellcode in a binary file and place it at `src/payload.bin`.
+1. Write your shellcode in a binary file and place it at `src/shellcode.bin`.
 2. Compile the project by running `make custom`. The shellcode will be automatically encoded and embedded into the output `bin/lexicon` binary.

@@ -14,7 +14,7 @@ _start:
     mov rax, 1   ; sys_write
     mov rdi, 1   ; stdout
     mov rsi, rsp ; pointer to string on stack
-    mov rdx, 14  ; length of string
+    mov rdx, 15  ; length of string
     syscall
 
     ; Exit system call
