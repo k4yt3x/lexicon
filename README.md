@@ -15,6 +15,8 @@ Here's a "Hello, World!" shellcode encoded into English words:
 
 This project was originally a part of the CyberSci CTF challenge [Vector Veil](https://github.com/k4yt3x/cs2025-rgnl-vecveil). It has been removed from the challenge before the competition, but I thought it might be a useful tool for bypassing heuristic-based security measures during pentests, so I decided to release it as a standalone project.
 
+## Features
+
 Aside from the basic shellcode encoding/decoding functionality, this shellcode executor also features the following anti-debug/analysis techniques:
 
 - Stores the DJB2 hash of the English words in the lookup table instead of plaintext strings.
@@ -22,7 +24,9 @@ Aside from the basic shellcode encoding/decoding functionality, this shellcode e
 - Obfuscates the control flow by manually overwriting the `main` function's return address with the allocated shellcode's address.
 - Hides the allocation of r/w/x memory in the `_init_array`.
 
-I might add more in the future for fun. This is what the `main` function looks like if you drag it into IDA Pro:
+I might add more in the future for fun.
+
+This is what the `main` function looks like if you drag it into IDA Pro to illustrate what the obfuscation looks like:
 
 <img width="1342" height="702" alt="main" src="https://github.com/user-attachments/assets/55979357-b3f7-40e1-88e3-070124d553a9" />
 
