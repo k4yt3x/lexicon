@@ -77,7 +77,12 @@ void decode_shellcode_bytes(int signum) {
 void alloc_exec_mem() {
     // Allocate executable memory
     g_executable_memory = mmap(
-        NULL, CODE_SIZE, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0
+        NULL,
+        CODE_SIZE >= 12 ? CODE_SIZE : 12,
+        PROT_READ | PROT_WRITE | PROT_EXEC,
+        MAP_ANONYMOUS | MAP_PRIVATE,
+        -1,
+        0
     );
     if (g_executable_memory == MAP_FAILED) {
 #ifdef DEBUG
