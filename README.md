@@ -20,9 +20,9 @@ This project was originally a part of the CyberSci CTF challenge [Vector Veil](h
 Aside from the basic shellcode encoding/decoding functionality, this shellcode executor also features the following anti-debug/analysis techniques:
 
 - Stores the DJB2 hash of the English words in the lookup table instead of plaintext strings.
-- Detects debuggers by abusing the `SIGTRAP` signal handler.
+- Detects debuggers by abusing the `SIGTRAP` signal handler; executes `exit(0);` if debuggers are detected.
 - Obfuscates the control flow by manually overwriting the `main` function's return address with the allocated shellcode's address.
-- Hides the allocation of r/w/x memory in the `_init_array`.
+- Hides the allocation of r/w/x memory in the `_init_array` and the main code in the `_fini_array` so `main` appears to be empty.
 
 I might add more in the future for fun.
 
