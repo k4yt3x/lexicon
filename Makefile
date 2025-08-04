@@ -1,35 +1,45 @@
-.PHONY: all build debug clean
+.PHONY: all shellcode build debug clean
 
+CC=clang
 SRCDIR=src
+INCDIR=include
 BINDIR=bin
-CFLAGS=-Wall -fPIC -I$(SRCDIR)
+OBJDIR=obj
+CFLAGS=-Wall -fPIC -I$(INCDIR)
 
 # specify DJB2=1 to enable DJB2 hashing lookup
+DJB2=1
 ifeq ($(DJB2), 1)
-    DJB2_FLAG=-DDJB2
-else
-    DJB2_FLAG=
+	CFLAGS+=-DDJB2
 endif
 
-# specify JMP=1 to jmp to the shellcode instead of call
-ifeq ($(JMP), 1)
-    JMP_FLAG=-DJMP
-else
-    JMP_FLAG=
+# specify NOSIGNAL=1 to disable signal handler abuse
+NOSIGNAL=0
+ifeq ($(NOSIGNAL), 1)
+	CFLAGS+=-DNOSIGNAL
 endif
 
-all: build
+fast: prepare shellcode
+	$(CC) $(CFLAGS) -O3 -ffast-math -s $(SRCDIR)/lexicon.c -o $(BINDIR)/lexicon
 
-build:
-	mkdir -p $(BINDIR)
-	gcc $(CFLAGS) $(DJB2_FLAG) $(JMP_FLAG) -Ofast -s $(SRCDIR)/lexikon.c -o $(BINDIR)/lexikon
+build: prepare shellcode
+	$(CC) $(CFLAGS) -s $(SRCDIR)/lexicon.c -o $(BINDIR)/lexicon
 
-debug:
-	mkdir -p $(BINDIR)
-	gcc $(CFLAGS) $(DJB2_FLAG) $(JMP_FLAG) -g -DDEBUG $(SRCDIR)/lexikon.c \
-		-no-pie -fno-stack-protector -Wl,-z,norelro -z execstack \
-		-o $(BINDIR)/lexikon
+debug: prepare shellcode
+	$(CC) $(CFLAGS) -g -DDEBUG $(SRCDIR)/lexicon.c -o $(BINDIR)/lexicon
+
+custom: prepare
+	ld -o $(BINDIR)/payload.bin -N -Ttext 0x0 --oformat binary $(OBJDIR)/payload.o
+	python3 tools/encoder.py $(BINDIR)/payload.bin $(INCDIR)/shellcode.h
+	$(CC) $(CFLAGS) -O3 -ffast-math -s $(SRCDIR)/lexicon.c -o $(BINDIR)/lexicon
+
+shellcode: prepare
+	nasm -f elf64 $(SRCDIR)/payload.nasm -o $(OBJDIR)/payload.o
+	ld -o $(BINDIR)/payload.bin -N -Ttext 0x0 --oformat binary $(OBJDIR)/payload.o
+	python3 tools/encoder.py $(BINDIR)/payload.bin $(INCDIR)/shellcode.h
+
+prepare:
+	mkdir -p $(BINDIR) $(OBJDIR)
 
 clean:
-	rm -f $(SRCDIR)/*.o $(BINDIR)/lexikon
-
+	rm -f $(SRCDIR)/*.o $(BINDIR)/lexicon

@@ -1,5 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import sys
+
+HEADER = """#ifndef SHELLCODE_H
+#define SHELLCODE_H
+
+const char *SHELLCODE[] = {{{}}};
+
+#endif // SHELLCODE_H
+"""
 
 # fmt: off
 # Look up table for converting bytes to English words
@@ -41,13 +50,16 @@ LOOKUP_TABLE = [
 
 # Make sure the lookup table has 256 words
 assert len(LOOKUP_TABLE) == 256
+assert len(sys.argv) == 3, "Usage: python encoder.py <payload.bin> <shellcode.h>"
 
-# Read the shellcode bytes from the file
-with open("../examples/shellcode", "rb") as shellcode_file:
-    shellcode = shellcode_file.read()
+# Read the payload bytes from the file
+with open(sys.argv[1], "rb") as payload_file:
+    payload = payload_file.read()
 
-# Convert the shellcode bytes to English words and print them
-for index, byte in enumerate(shellcode):
-    print(LOOKUP_TABLE[byte], end="")
-    if index != len(shellcode) - 1:
-        print(" ", end="")
+# Convert the payload bytes to English words and print them
+words = []
+for index, byte in enumerate(payload):
+    words.append(f'"{LOOKUP_TABLE[byte]}"')
+
+with open(sys.argv[2], "w", encoding="utf-8") as payload_file:
+    payload_file.write(HEADER.format(", ".join(words)))
