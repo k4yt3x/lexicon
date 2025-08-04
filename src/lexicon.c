@@ -83,9 +83,35 @@ void alloc_exec_mem() {
 #endif
         exit(EXIT_FAILURE);
     }
+
+    // Write exit(-1) into the allocated memory
+    // mov rax, 60
+    g_executable_memory[0] = 0x48;
+    g_executable_memory[1] = 0xc7;
+    g_executable_memory[2] = 0xc0;
+    g_executable_memory[3] = 0x3c;
+    g_executable_memory[4] = 0x00;
+    g_executable_memory[5] = 0x00;
+    g_executable_memory[6] = 0x00;
+
+    // mov rdi, -1
+    g_executable_memory[7] = 0x48;
+    g_executable_memory[8] = 0x31;
+    g_executable_memory[9] = 0xff;
+
+    // syscall
+    g_executable_memory[10] = 0x0f;
+    g_executable_memory[11] = 0x05;
 }
 
-int main(int argc, char* argv[]) {
+// Stub for compiler
+// This gets executed between the constructor and destructor
+int main(void) {
+    __asm__("ret");
+}
+
+[[gnu::destructor]]
+void entrypoint(void) {
     // Overwrite the return address on the stack
     __asm__("movq %0, +8(%%rsp)" : : "r"(g_executable_memory));
 
@@ -102,19 +128,13 @@ int main(int argc, char* argv[]) {
     }
 #endif
 
-    // Cast executable memory to a function pointer and execute
+    // You can also call the shellcode like a function instead if it returns properly.
+    // This allows you to perform other operations after the shellcode executes.
+    // Don't forget to remove the return address overwrite above if you do this.
     // void (*shellcode)() = (void (*)())g_executable_memory;
     // shellcode();
+    // munmap(g_executable_memory, CODE_SIZE);
 
-    // Overwrite the return address with the address of the shellcode
-    // ret will jump to the shellcode
-    __asm__(
-        "xorq %rax, %rax\n"
-        "add $8, %rsp\n"
-        "retq\n"
-    );
-
-    // Clean up the executable memory, will never be reached
-    // munmap(g_executable_memory, code_size);
-    // return EXIT_SUCCESS;
+    // Since the return address has been overwritten,
+    // the function return here will jump to the shellcode.
 }
