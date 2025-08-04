@@ -5,7 +5,11 @@ A low-entropy shellcode executor that encodes shellcode bytes into common Englis
 In short, many security software use the entropy of sections within binaries to determine if they contain encrypted or obfuscated code. By encoding shellcode bytes into English words, we can create a binary with very low entropy, which is less likely to be flagged by such security measures.
 You can watch Will Summerhill's presentation ["Simplified Malware Development - Entropy and Other Techniques"](https://youtu.be/F6R-YPsjpVY?t=13597) to learn more.
 
-This is what the shellcode looks like when encoded and stored in the binary:
+Here's a "Hello, World!" shellcode encoded into English words:
+
+<img width="1460" height="428" alt="image" src="https://github.com/user-attachments/assets/1508e927-9e70-4c1c-94e2-6a6e14b8c10a" />
+
+...and this what the shellcode looks like when it's encoded and stored in the binary:
 
 <img width="970" height="563" alt="encoded_shellcode" src="https://github.com/user-attachments/assets/221dc13f-2fe6-4ecf-af63-ee3bce9a2c2d" />
 
