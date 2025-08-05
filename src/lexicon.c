@@ -114,13 +114,13 @@ void alloc_exec_mem() {
 // Stub for compiler
 // This gets executed between the constructor and destructor
 int main(void) {
-    __asm__("ret");
+    asm("ret");
 }
 
 [[gnu::destructor]]
 void entrypoint(void) {
     // Overwrite the return address on the stack
-    __asm__("movq %0, +8(%%rsp)" : : "r"(g_executable_memory));
+    asm("movq %0, +8(%%rsp)" : : "r"(g_executable_memory));
 
 #if defined(DEBUG) || defined(NOSIGNAL)
     if (sigsetjmp(g_jump_buffer, 1) == 0) {
@@ -131,7 +131,7 @@ void entrypoint(void) {
     // The int3 below will trigger the signal and decode the shellcode bytes
     signal(SIGTRAP, decode_shellcode_bytes);
     if (sigsetjmp(g_jump_buffer, 1) == 0) {
-        __asm__("int3");
+        asm("int3");
     }
 #endif
 
